@@ -29,7 +29,7 @@ class BaseModel:
         obj_id = self.id
         attributes = self.__dict__
 
-        return ("[{}] ({}) {}".format(class_name, obj.id, attributes)
+        return ("[{}] ({}) {}".format(class_name, obj_id, attributes))
 
     def save(self):
         """
@@ -43,13 +43,13 @@ class BaseModel:
         returns a dictionary containing all keys/values of __dict__
         of the instance
         """
-        class_name=self.__class__.__name__
-        obj_id=self.id
-        attributes=self.__dict__
+        class_name = self.__class__.__name__
+        obj_id = self.id
+        attributes = self.__dict__
 
-        attributes['created_at']=self.created_at.isoformat()
-        attributes['updated_at']=self.updated_at.isoformat()
+        attributes['created_at'] = self.created_at.isoformat()
+        attributes['updated_at'] = self.updated_at.isoformat()
 
-        attributes['__class__']=class_name
+        attributes['__class__'] = class_name
 
         return attributes
