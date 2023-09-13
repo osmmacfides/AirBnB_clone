@@ -5,6 +5,7 @@ This module defines a parent class
 
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
@@ -34,6 +35,8 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
 
+        storage.new(self)
+
     def __str__(self):
         """
         method to return string
@@ -50,6 +53,7 @@ class BaseModel:
         when an attribute is set
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
