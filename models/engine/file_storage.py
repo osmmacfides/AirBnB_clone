@@ -39,13 +39,13 @@ class FileStorage:
             serialized_objects[key] = obj.to_dict()
 
         with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
-            json.dump(serialized_objects, f)
+            json.dump(serialized_objects, f, indent=4)
 
     def reload(self):
         """
         This method deserializes the JSON file to __objects
         (only if the JSON file (__file_path) exists
-        otherwise, do nothing. If the file doesn’t exist,
+        otherwise, do nothing. If the file doesn't exist,
         no exception should be raised)
         """
         try:
@@ -54,7 +54,7 @@ class FileStorage:
 
             for key, value in data.items():
                 class_name, obj_id = key.split('.')
-                cls = getattr(__import__('models', fromlist=[class_name]),
+                cls = getattr(__import__('models.base_model', fromlist=[class_name]),
                               class_name, None)
                 if cls:
                     obj = cls(**value)
