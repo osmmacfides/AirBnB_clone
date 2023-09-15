@@ -27,10 +27,11 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
-    # def do_help(self, arg):
+    def do_help(self, arg):
         """
-        List available commands with "help" or detailed help with "help cmd".
+        List available commands with "help" or detailed help with "help cmd"
         """
+        return super().do_help(arg)
 
     def do_EOF(self, line):
         """

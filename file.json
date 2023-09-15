@@ -330,5 +330,11 @@
         "name": "My_First_Model",
         "my_number": 89,
         "__class__": "BaseModel"
+    },
+    "BaseModel.390dc88f-1eca-49f8-9797-5ebb29c3fe25": {
+        "id": "390dc88f-1eca-49f8-9797-5ebb29c3fe25",
+        "created_at": "2023-09-15T03:19:36.137240",
+        "updated_at": "2023-09-15T03:19:36.137255",
+        "__class__": "BaseModel"
     }
 }
