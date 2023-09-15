@@ -54,8 +54,8 @@ class FileStorage:
 
             for key, value in data.items():
                 class_name, obj_id = key.split('.')
-                cls = getattr(__import__('models.base_model', fromlist=[class_name]),
-                              class_name, None)
+                cls = getattr(__import__('models.base_model',
+                              fromlist=[class_name]), class_name, None)
                 if cls:
                     obj = cls(**value)
                 FileStorage.__objects[key] = obj

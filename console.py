@@ -2,9 +2,10 @@
 """
 This module defines a program that contains
 the entry point of the command interpreter:
-"""
-import cmd
+    """
+import cmd, json
 from models.base_model import BaseModel
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -19,6 +20,34 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
+    def do_help(self, arg):
+        """
+        List available commands with "help" or detailed help with "help cmd".
+        """
+        if arg:
+        # Display help for a specific command
+            if arg in self.__class__.__dict__:
+                docstring = self.__class__.__dict__[arg].__doc__
+                if docstring:
+                    print(docstring)
+                else:
+                    print("No help available for {}".format(arg))
+            else:
+                print("No help available for {}".format(arg))
+        else:
+        # Display the list of documented commands
+            print("\nDocumented commands (type help <topic>):")
+            commands = [cmd for cmd in self.__class__.__dict__ if cmd.startswith("do_")]
+            commands.sort()
+            for cmd in commands:
+                cmd_name = cmd[3:]
+                docstring = self.__class__.__dict__[cmd].__doc__
+                if docstring:
+                    print("{}  {}".format(cmd_name, docstring.splitlines()[0]))
+                else:
+                    print(cmd_name)
+
+
     def do_EOF(self, line):
         """
         method to exit the program
@@ -26,163 +55,182 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, line):
-	"""
-	method to create new instance of BaseModel
-	"""
-	args = line.split()
-	if not args:
-		print("** class name missing **")
-	else:
-		class_name = args[0]
+        """
+        method to create new instance of BaseModel
+        """
+        args = line.split()
+        if not args:
+            print("** class name missing **")
+            return
 
-	try:
-		new_instance = eval(class_name)()
-		new_instance.save()
-		print(new_instance.id)
+        class_name = args[0]
+        if class_name not in ["BaseModel", "User", "State", "City",
+                              "Place", "Review", "Amenity"]:
+            print("** class doesn't exist **")
+            return
 
-	except NameError:
-		print("** class doesn't exist **")
+        try:
+            new_instance = eval(class_name)()
+            new_instance.save()
+            print(new_instance.id)
 
-    def do_show(self):
-	"""
-	method to print the string representation of an
-	instance based on the class name and id
-	"""
-	args = line.split()
-	if not args:
-		print("** class name missing **")
-		return
+        except NameError:
+            print("** class doesn't exist **")
 
-	class_name = args[0]
+    def do_show(self, line):
+        """
+        method to print the string representation of an
+        instance based on the class name and id
+        """
+        args = line.split()
+        if not args:
+            print("** class name missing **")
+            return
 
-	if class_name not in ["BaseModel", "User", "State", "City", "Place", "Review", "Amenity"]:
-                print ("** class doesn't exist **")
-                return
+        class_name = args[0]
 
-	if len(args) < 2:
-                print("** instance id missing **")
-                return
+        if class_name not in ["BaseModel", "User", "State", "City",
+                              "Place", "Review", "Amenity"]:
+          print("** class doesn't exist **")
+          return
 
-	instance_id = args[1]
-	# Attempt to retrieve the instance based on class_name and instance_id
-	try:
-		instance = storage.get(class_name, instance_id)
-		if instance:
-			print(instance)
-		else:
-			print("** no instance found **")
-	except Exception as e:
-		pass
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = args[1]
+        # Load the data from the JSON file
+        try:
+            with open("file.json", "r") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            data = {}
+
+        # Construct the key to search for
+        key = "{}.{}".format(class_name, instance_id)
+        # Check if the key exists in the data
+        if key in data:
+            print(data[key])
+        else:
+            print("** no instance found **")
 
     def do_destroy(self, line):
-	"""
-	method to delete an instance based on the class name
-	and id (save the change into the JSON file)
-	"""
-    	args = line.split()
-    	if not args:
-        	print("** class name missing **")
-        	return
+        """
+        method to delete an instance based on the class name
+        and id (save the change into the JSON file)
+        """
+        args = line.split()
+        if not args:
+            print("** class name missing **")
+            return
 
-    	class_name = args[0]
+        class_name = args[0]
 
-	if class_name not in ["BaseModel", "User", "State", "City", "Place", "Review", "Amenity"]:
-                print ("** class doesn't exist **")
-                return
+        if class_name not in ["BaseModel", "User", "State", "City",
+                              "Place", "Review", "Amenity"]:
+            print("** class doesn't exist **")
+            return
 
-    	if len(args) < 2:
-        	print("** instance id missing **")
-        	return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
 
-    	instance_id = args[1]
-    	try:
-        	# Attempt to retrieve the instance based on class_name and instance_id
-        	instance = storage.get(class_name, instance_id)
-        	if instance:
-            	storage.delete(instance)
-            	storage.save()
-        	else:
-           	print("** no instance found **")
-    	except Exception as e:
-        	pass
+        instance_id = args[1]
+        try:
+            # Attempt to retrieve the instance based on
+            # class_name and instance_id
+            instance = storage.get(class_name, instance_id)
+            if instance:
+                storage.delete(instance)
+                storage.save()
+            else:
+                print("** no instance found **")
+        except Exception as e:
+            pass
 
-    def do_all(self):
-	"""
-	method to prints all string representation of all
-	instances based or not on the class name
-	"""
-	args = line.split()
-	if not args:
-                print("** class name missing **")
-                return
+    def do_all(self, line):
+        """
+        method to prints all string representation of all
+        instances based or not on the class name
+        """
+        args = line.split()
+        if not args:
+            print("** class name missing **")
+            return
 
-	class_name = args[0]
+        class_name = args[0]
 
-	if class_name not in ["BaseModel", "User", "State", "City", "Place", "Review", "Amenity"]:
-		print ("** class doesn't exist **")
-        	return
+        if class_name not in ["BaseModel", "User", "State", "City",
+                              "Place", "Review", "Amenity"]:
+            print("** class doesn't exist **")
+            return
 
-	instances = storage.all(class_name)
-	print([str(instance) for instance in instances])
+        instances = storage.all()
+        print([str(instance) for instance in instances])
 
-    def do_update(self):
-	"""
-	method to Updates an instance based on the class name
-	and id by adding or updating attribute (save the
-	change into the JSON file)
-	"""
-	args = line.split()
-	if not args:
-		print("** class name missing **")
-		return
+    def do_update(self, line):
+        """
+        method to Updates an instance based on the class name
+        and id by adding or updating attribute (save the
+        change into the JSON file)
+        """
+        args = line.split()
+        if not args:
+            print("** class name missing **")
+            return
 
-	class_name = args[0]
-	if class_name not in ["BaseModel", "User", "State", "City", "Place", "Review", "Amenity"]:
-        	print("** class doesn't exist **")
-        	return
+        class_name = args[0]
+        if class_name not in ["BaseModel", "User", "State", "City",
+                              "Place", "Review", "Amenity"]:
+            print("** class doesn't exist **")
+            return
 
-	if len(args) < 2:
-		print("** instance id missing **")
-		return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
 
-	instance_id = args[1]
+        instance_id = args[1]
 
-	instance = storage.get(class_name. instance_id)
-	if not instance:
-		print ("** no instance found **")
-		return
+        if class_name in storage.all():
+            instances = storage.all()[class_name]
+            if instance_id in instances:
+                instance = instances[instance_id]
 
-	if len(args < 4):
-		print ("** attribute name missing **")
-		return
+                if len(args) < 4:
+                    print("** attribute name missing **")
+                    return
 
-	attribute_name = args[2]
+                attribute_name = args[2]
 
-    	if attribute_name == "id" or attribute_name == "created_at" or attribute_name == "updated_at":
-        	print("** cannot update id, created_at, or updated_at **")
-        	return
+                if attribute_name == "id" or attribute_name == "created_at" or attribute_name == "updated_at":
+                    print("** cannot update id, created_at, or updated_at **")
+                    return
 
-    	if len(args) < 5:
-        	print("** value missing **")
-        	return
+                if len(args) < 5:
+                    print("** value missing **")
+                    return
 
-    	attribute_value = args[3]  # The value doesn't need to be joined, as it's a single argument
+                attribute_value = args[3]  # The value doesn't need to be joined,
+                # as it's a single argument
 
-    	# Get the current attribute type
-    	attr_type = type(getattr(instance, attribute_name))
+                # Get the current attribute type
+                attr_type = type(getattr(instance, attribute_name))
 
-    	# Cast the attribute value to the attribute type
-    	try:
-        	casted_value = attr_type(attribute_value)
-    	except ValueError:
-        	print("** invalid attribute value **")
-        	return
+                # Cast the attribute value to the attribute type
+                try:
+                    casted_value = attr_type(attribute_value)
+                except ValueError:
+                    print("** invalid attribute value **")
+                    return
 
-    	# Update the attribute
-    	setattr(instance, attribute_name, casted_value)
+                # Update the attribute
+                setattr(instance, attribute_name, casted_value)
 
-    	# Save the changes to the JSON file
-    	storage.save()
+                # Save the changes to the JSON file
+                storage.save()
+
+            else:
+                print("** no instance found **")
 
 
 if __name__ == '__main__':

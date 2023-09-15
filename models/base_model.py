@@ -63,11 +63,18 @@ class BaseModel:
         of the instance
         """
         class_name = self.__class__.__name__
-        obj_id  = self.id
+        obj_id = self.id
         attributes = self.__dict__
 
-        attributes['created_at'] = self.created_at.isoformat()
-        attributes['updated_at'] = self.updated_at.isoformat()
+        if isinstance(self.created_at, str):
+            attributes["created_at"] = self.created_at
+        else:
+            attributes["created_at"] = self.created_at.isoformat()
+
+        if isinstance(self.updated_at, str):
+            attributes["updated_at"] = self.updated_at
+        else:
+            attributes['updated_at'] = self.updated_at.isoformat()
 
         attributes['__class__'] = class_name
 
