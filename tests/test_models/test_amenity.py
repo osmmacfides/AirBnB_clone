@@ -138,6 +138,7 @@ class TestAmenity_save(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(amnid, f.read())
 
+
 class TestAmenity_to_dict(unittest.TestCase):
     """This class defines unittests for testing
     to_dict method of the Amenity class
