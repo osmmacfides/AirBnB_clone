@@ -14,16 +14,18 @@ from datetime import datetime
 from time import sleep
 from models.amenity import Amenity
 
-""" Unittest for testing instantiation of the Amenity class"""
-
 
 class TestAmenity_instantiation(unittest.TestCase):
+    """
+    This class defines unittest for testing
+    instantiation of the Amenity class
+    """
 
     def test_no_args_instantiates(self):
-        self.assertEqua(Amenity, type(Amenity()))
+        self.assertEqual(Amenity, type(Amenity()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(Amenity(), models.storage.all().values)
+        self.assertIn(Amenity(), models.storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(Amenity().id))
@@ -76,7 +78,7 @@ class TestAmenity_instantiation(unittest.TestCase):
     def test_instantiation_with_kwargs(self):
         dt = datetime.today()
         dt_iso = dt.isoformat()
-        amn = Amenity(id="", created_at=dt.iso, updated_at=dt_iso)
+        amn = Amenity(id="", created_at=dt_iso, updated_at=dt_iso)
         self.assertEqual(amn.id, "")
         self.assertEqual(amn.created_at, dt)
         self.assertEqual(amn.updated_at, dt)
@@ -86,10 +88,11 @@ class TestAmenity_instantiation(unittest.TestCase):
             Amenity(id=None, created_at=None, updated_at=None)
 
 
-"""Unittests for testing save method of the Amenity class."""
-
-
 class TestAmenity_save(unittest.TestCase):
+    """
+    This class defines unittests for testing
+    save method of the Amenity class.
+    """
 
     @classmethod
     def setup(self):
@@ -135,8 +138,56 @@ class TestAmenity_save(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(amnid, f.read())
 
-    """Unittests for testing to_dict method of the Amenity class."""
+class TestAmenity_to_dict(unittest.TestCase):
+    """This class defines unittests for testing
+    to_dict method of the Amenity class
+    """
+    def test_to_dict_type(self):
+        self.assertTrue(dict, type(Amenity().to_dict()))
+
+    def test_to_dict_contains_correct_keys(self):
+        amn = Amenity()
+        self.assertIn("id", amn.to_dict())
+        self.assertIn("created_at", amn.to_dict())
+        self.assertIn("updated_at", amn.to_dict())
+        self.assertIn("__class__", amn.to_dict())
+
+    def test_to_dict_contains_added_attributes(self):
+        amn = Amenity()
+        amn.middle_name = "Holberton"
+        amn.my_number = 98
+        self.assertEqual("Holberton", amn.middle_name)
+        self.assertIn("my_number", amn.to_dict())
+
+    def test_to_dict_datetime_attributes_are_strs(self):
+        amn = Amenity()
+        amn_dict = amn.to_dict()
+        self.assertEqual(str, type(amn_dict["id"]))
+        self.assertEqual(str, type(amn_dict["created_at"]))
+        self.assertEqual(str, type(amn_dict["updated_at"]))
+
+    def test_to_dict_output(self):
+        dt = datetime.today()
+        amn = Amenity()
+        amn.id = "123456"
+        amn.created_at = amn.updated_at = dt
+        tdict = {
+            'id': '123456',
+            '__class__': 'Amenity',
+            'created_at': dt.isoformat(),
+            'updated_at': dt.isoformat(),
+        }
+        self.assertDictEqual(amn.to_dict(), tdict)
+
+    def test_contrast_to_dict_dunder_dict(self):
+        amn = Amenity()
+        self.assertNotEqual(amn.to_dict(), amn.__dict__)
+
+    def test_to_dict_with_arg(self):
+        amn = Amenity()
+        with self.assertRaises(TypeError):
+            amn.to_dict(None)
 
 
-class TestAmenity_to_dict(unittest.Testcase):
-    pass
+if __name__ == "__main__":
+    unittest.main()

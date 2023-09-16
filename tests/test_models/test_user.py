@@ -14,16 +14,18 @@ from datetime import datetime
 from time import sleep
 from models.user import User
 
-""" Unittest for testing instantiation of the User class"""
-
 
 class TestUser_instantiation(unittest.TestCase):
+    """
+    This class defines unittest for testing
+    instantiation of the User class
+    """
 
     def test_no_args_instantiates(self):
-        self.assertEqua(User, type(User()))
+        self.assertEqual(User, type(User()))
 
     def test_new_instance_stored_in_objects(self):
-        self.assertIn(User(), models.storage.all().values)
+        self.assertIn(User(), models.storage.all().values())
 
     def test_id_is_public_str(self):
         self.assertEqual(str, type(User().id))
@@ -82,7 +84,7 @@ class TestUser_instantiation(unittest.TestCase):
     def test_instantiation_with_kwargs(self):
         dt = datetime.today()
         dt_iso = dt.isoformat()
-        usr = User(id="", created_at=dt.iso, updated_at=dt_iso)
+        usr = User(id="", created_at=dt_iso, updated_at=dt_iso)
         self.assertEqual(usr.id, "")
         self.assertEqual(usr.created_at, dt)
         self.assertEqual(usr.updated_at, dt)
@@ -92,10 +94,11 @@ class TestUser_instantiation(unittest.TestCase):
             User(id=None, created_at=None, updated_at=None)
 
 
-"""Unittests for testing save method of the User class."""
-
-
 class TestUser_save(unittest.TestCase):
+    """
+    This class defines unittests for testing
+    save method of the User class
+    """
 
     @classmethod
     def setup(self):
@@ -141,8 +144,58 @@ class TestUser_save(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(usrid, f.read())
 
-    """Unittests for testing to_dict method of the User class."""
+
+class TestUser_to_dict(unittest.TestCase):
+    """
+    This class defines unittests for testing
+    to_dict method of the User class.
+    """
+    def test_to_dict_type(self):
+        self.assertTrue(dict, type(User().to_dict()))
+
+    def test_to_dict_contains_correct_keys(self):
+        usr = User()
+        self.assertIn("id", usr.to_dict())
+        self.assertIn("created_at", usr.to_dict())
+        self.assertIn("updated_at", usr.to_dict())
+        self.assertIn("__class__", usr.to_dict())
+
+    def test_to_dict_contains_added_attributes(self):
+        usr = User()
+        usr.middle_name = "Holberton"
+        usr.my_number = 98
+        self.assertEqual("Holberton", usr.middle_name)
+        self.assertIn("my_number", usr.to_dict())
+
+    def test_to_dict_datetime_attributes_are_strs(self):
+        usr = User()
+        usr_dict = usr.to_dict()
+        self.assertEqual(str, type(usr_dict["id"]))
+        self.assertEqual(str, type(usr_dict["created_at"]))
+        self.assertEqual(str, type(usr_dict["updated_at"]))
+
+    def test_to_dict_output(self):
+        dt = datetime.today()
+        usr = User()
+        usr.id = "123456"
+        usr.created_at = usr.updated_at = dt
+        tdict = {
+            'id': '123456',
+            '__class__': 'User',
+            'created_at': dt.isoformat(),
+            'updated_at': dt.isoformat(),
+        }
+        self.assertDictEqual(usr.to_dict(), tdict)
+
+    def test_contrast_to_dict_dunder_dict(self):
+        usr = User()
+        self.assertNotEqual(usr.to_dict(), usr.__dict__)
+
+    def test_to_dict_with_arg(self):
+        usr = User()
+        with self.assertRaises(TypeError):
+            usr.to_dict(None)
 
 
-class TestUser_to_dict(unittest.Testcase):
-    pass
+if __name__ == "__main__":
+    unittest.main()
