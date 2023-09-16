@@ -10,18 +10,14 @@ class Place(BaseModel):
     public place class defined
     """
 
-    def __init__(self):
-        """
-        Instantiation of public attributes
-        """
-        self.city_id = str("")
-        self.user_id = str("")
-        self.name = str("")
-        self.description = str("")
-        self.number_rooms = int(0)
-        self.number_bathrooms = int(0)
-        self.max_guest = int(0)
-        self.price_by_night = int(0)
-        self.latitude = float(0.0)
-        self.longitude = float(0.0)
-        self.amenity_ids = list()
+    city_id = ""
+    user_id = ""
+    name = ""
+    description = ""
+    number_rooms = 0
+    number_bathrooms = 0
+    max_guest = 0
+    price_by_night = 0
+    latitude = 0.0
+    longitude = 0.0
+    amenity_ids = []

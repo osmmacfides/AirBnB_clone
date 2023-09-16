@@ -10,9 +10,5 @@ class City(BaseModel):
     public city class defined
     """
 
-    def __init__(self):
-        """
-        Instantiation of public attributes
-        """
-        self.state_id = str("")
-        self.name = str("")
+    state_id = ""
+    name = ""

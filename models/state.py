@@ -10,8 +10,4 @@ class State(BaseModel):
     public state class defined
     """
 
-    def __init__(self):
-        """
-        Instantiation of public attributes
-        """
-        self.name = str("")
+    name = ""

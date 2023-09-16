@@ -13,6 +13,9 @@ class TestBaseModel(TestCase):
     This module tests for methods in BaseModel class
     """
     def test_init(self):
+        """
+        method to test for instantiation
+        """
         model1 = BaseModel()
         self.assertIsInstance(model, BaseModel)
         self.assertTrue(hasattr(model1, "id"))

@@ -10,8 +10,4 @@ class Amenity(BaseModel):
     public amenity class defined
     """
 
-    def __init__(self):
-        """
-        Instantiation of public attributes
-        """
-        self.name = str("")
+    name = ""

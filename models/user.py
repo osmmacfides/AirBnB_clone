@@ -10,11 +10,7 @@ class User(BaseModel):
     public user class defined
     """
 
-    def __init__(self):
-        """
-        Instantiation of public attributes
-        """
-        self.email = str("")
-        self.password = str("")
-        self.first_name = str("")
-        self.last_name = str("")
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""

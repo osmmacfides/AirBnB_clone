@@ -10,10 +10,6 @@ class Review(BaseModel):
     public state class defined
     """
 
-    def __init__(self):
-        """
-        Instantiation of public attributes
-        """
-        self.place_id = ""
-        self.user_id = str("")
-        self.text = str("")
+    place_id = ""
+    user_id = ""
+    text = ""
