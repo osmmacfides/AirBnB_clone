@@ -402,5 +402,13 @@
         "name": "My First Model",
         "my_number": 89,
         "__class__": "BaseModel"
+    },
+    "BaseModel.6f72f14d-2e87-4ff1-9fa9-3145a3484c5a": {
+        "id": "6f72f14d-2e87-4ff1-9fa9-3145a3484c5a",
+        "created_at": "2023-09-16T06:00:58.016680",
+        "updated_at": "2023-09-16T06:00:58.016694",
+        "name": "My_First_Model",
+        "my_number": 89,
+        "__class__": "BaseModel"
     }
 }
