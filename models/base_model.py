@@ -69,7 +69,7 @@ class BaseModel:
         """
         class_name = self.__class__.__name__
         obj_id = self.id
-        attributes = self.__dict__
+        attributes = self.__dict__.copy()
 
         if isinstance(self.created_at, str):
             attributes["created_at"] = self.created_at
