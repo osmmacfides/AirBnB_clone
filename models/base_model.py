@@ -36,8 +36,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-
-        models.storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """
@@ -48,6 +47,12 @@ class BaseModel:
         attributes = self.__dict__
 
         return ("[{}] ({}) {}".format(class_name, obj_id, attributes))
+
+    def __repr__(self):
+        """
+        returns string repr
+        """
+        return (self.__str__())
 
     def save(self):
         """
