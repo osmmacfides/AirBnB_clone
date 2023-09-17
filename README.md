@@ -14,4 +14,17 @@ This abstraction will also allow you to change the type of storage easily withou
 
 The console will be a tool to validate this storage engine
 
+# `Supported classes:`
+* BaseModel
+* User
+* State
+* City
+* Amenity
+* Place
+* Review
+
+# `Authors`
+
+**Okonkwo Chiamaka** **[Email](okonkwosmmac@gmail.com@)**
+
 
