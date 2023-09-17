@@ -20,6 +20,15 @@ class HBNBCommand(cmd.Cmd):
     class definition for the command interpreter
     """
     prompt = "(hbnb) "
+    __classes = {
+        "BaseModel",
+        "User",
+        "State",
+        "City",
+        "Place",
+        "Amenity",
+        "Review"
+    }
 
     def do_quit(self, line):
         """
@@ -53,8 +62,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "User", "State", "City",
-                              "Place", "Review", "Amenity"]:
+        if class_name not in self.__classes:
             print("** class doesn't exist **")
             return
 
@@ -78,8 +86,7 @@ class HBNBCommand(cmd.Cmd):
 
         class_name = args[0]
 
-        if class_name not in ["BaseModel", "User", "State", "City",
-                              "Place", "Review", "Amenity"]:
+        if class_name not in self.__classes:
             print("** class doesn't exist **")
             return
 
@@ -115,8 +122,7 @@ class HBNBCommand(cmd.Cmd):
 
         class_name = args[0]
 
-        if class_name not in ["BaseModel", "User", "State", "City",
-                              "Place", "Review", "Amenity"]:
+        if class_name not in self.__classes:
             print("** class doesn't exist **")
             return
 
@@ -144,21 +150,21 @@ class HBNBCommand(cmd.Cmd):
         """
         args = line.split()
         instances = []
+        all_objects = storage.all()
 
         if len(args) > 0:
             class_name = args[0]
-            if class_name not in ["BaseModel", "User", "State", "City",
-                                  "Place", "Review", "Amenity"]:
+            if class_name not in self.__classes:
                 print("** class doesn't exist **")
                 return
 
-        all_objects = storage.all()
-
-        for key, obj in all_objects.items():
-            if class_name is None or obj.__class__.__name__ == class_name:
-                instances.append(str(obj))
-
-        print(instances)
+        else:
+            for obj in all_objects.values():
+                if len(args) > 0 and args[0] == obj.__class__.__name__:
+                    instances.append(obj.__str__())
+                elif len(args) == 0:
+                    instances.append(obj.__str__())
+            print(instances)
 
     def do_update(self, line):
         """
@@ -167,66 +173,63 @@ class HBNBCommand(cmd.Cmd):
         change into the JSON file)
         """
         args = line.split()
+        all_data = storage.all()
+
         if not args:
             print("** class name missing **")
-            return
+            return False
 
         class_name = args[0]
-        if class_name not in ["BaseModel", "User", "State", "City",
-                              "Place", "Review", "Amenity"]:
+
+        if class_name not in self.__classes:
             print("** class doesn't exist **")
-            return
+            return False
 
         if len(args) < 2:
             print("** instance id missing **")
-            return
+            return False
 
         instance_id = args[1]
 
-        instance = class_name + "." + instance_id
-        if instance in storage.all():
-            instances = storage.all()[class_name]
-            if instance_id in instances:
-                instance = instances[instance_id]
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return False
 
-                if len(args) < 4:
-                    print("** attribute name missing **")
-                    return
+        att_name = args[2]
 
-                attribute_name = args[2]
+        if len(args) < 4:
+            print("** value missing **")
+            return False
 
-                if (attribute_name == "id" or
-                   attribute_name == "created_at" or
-                   attribute_name == "updated_at"):
-                    print("** cannot update id, created_at, or updated_at **")
-                    return
+        att_val = args[3]
 
-                if len(args) < 5:
-                    print("** value missing **")
-                    return
+        # Construct the key to search for
+        key = "{}.{}".format(class_name, instance_id)
 
-                attribute_value = args[3]
-                # The value doesn't need to be joined,
-                # as it's a single argument
-
-                # Get the current attribute type
-                attr_type = type(getattr(instance, attribute_name))
-
-                # Cast the attribute value to the attribute type
-                try:
-                    casted_value = attr_type(attribute_value)
-                except ValueError:
-                    print("** invalid attribute value **")
-                    return
-
-                # Update the attribute
-                setattr(instance, attribute_name, casted_value)
-
-                # Save the changes to the JSON file
-                storage.save()
-
-        else:
+        # Check if the key exists in the dictionary of objects
+        if key not in storage.all():
             print("** no instance found **")
+            return False
+
+        if len(args) == 4:
+            obj = all_data[key]
+            if att_name in obj.__class__.__dict__.keys():
+                valtype = type(obj.__class__.__dict__[att_name])
+                obj.__dict__[att_name] = valtype(att_val)
+
+            else:
+                obj.__dict__[att_name] = att_val
+
+        elif type(eval(att_name)) == dict:
+            obj = all_data[key]
+            for k, v in eval(att_name).items():
+                if (k in obj.__class__.__dict__.keys() and
+                        type(obj.__class__.__dict__[k]) in {str, int, float}):
+                    valtype = type(obj.__class__.__dict__[k])
+                    obj.__dict__[k] = valtype(v)
+                else:
+                    obj.__dict__[k] = v
+        storage.save()
 
 
 if __name__ == '__main__':

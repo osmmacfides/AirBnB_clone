@@ -1,0 +1,40 @@
+{
+    "BaseModel.8eb36b48-351b-4cd3-ab06-4947937b7d09": {
+        "id": "8eb36b48-351b-4cd3-ab06-4947937b7d09",
+        "created_at": "2023-09-17T12:49:01.607945",
+        "updated_at": "2023-09-17T12:49:01.607980",
+        "__class__": "BaseModel"
+    },
+    "BaseModel.f8c1b3ed-092d-4638-9b5c-db6e731a92d4": {
+        "id": "f8c1b3ed-092d-4638-9b5c-db6e731a92d4",
+        "created_at": "2023-09-17T13:07:27.879469",
+        "updated_at": "2023-09-17T13:07:27.879487",
+        "__class__": "BaseModel"
+    },
+    "BaseModel.71f38620-d3cb-4467-8adc-16d011accad4": {
+        "id": "71f38620-d3cb-4467-8adc-16d011accad4",
+        "created_at": "2023-09-17T13:11:17.715632",
+        "updated_at": "2023-09-17T13:11:17.715649",
+        "__class__": "BaseModel"
+    },
+    "BaseModel.41dc6bdb-0fb7-45de-ae51-d2885a72e4af": {
+        "id": "41dc6bdb-0fb7-45de-ae51-d2885a72e4af",
+        "created_at": "2023-09-17T13:20:07.406078",
+        "updated_at": "2023-09-17T13:20:07.406092",
+        "__class__": "BaseModel"
+    },
+    "BaseModel.04c9b5b0-b056-4aeb-97f2-b8bf3aeba435": {
+        "id": "04c9b5b0-b056-4aeb-97f2-b8bf3aeba435",
+        "created_at": "2023-09-17T14:39:42.307196",
+        "updated_at": "2023-09-17T14:39:42.307213",
+        "first_name": "Betty",
+        "__class__": "BaseModel"
+    },
+    "BaseModel.894f5cbb-1e0f-40cf-a794-5682e6a3cf92": {
+        "id": "894f5cbb-1e0f-40cf-a794-5682e6a3cf92",
+        "created_at": "2023-09-17T14:45:55.206639",
+        "updated_at": "2023-09-17T14:45:55.206663",
+        "first_name": "\"Ugo\"",
+        "__class__": "BaseModel"
+    }
+}
