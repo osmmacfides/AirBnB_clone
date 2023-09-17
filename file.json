@@ -40,5 +40,21 @@
         "created_at": "2023-09-16T17:13:30.227985",
         "updated_at": "2023-09-16T17:13:30.228002",
         "__class__": "BaseModel"
+    },
+    "BaseModel.93dbdeae-cede-4a8d-a388-a9f2e9d649cc": {
+        "id": "93dbdeae-cede-4a8d-a388-a9f2e9d649cc",
+        "created_at": "2023-09-16T17:20:58.112850",
+        "updated_at": "2023-09-16T17:20:58.112862",
+        "name": "My_First_Model",
+        "my_number": 89,
+        "__class__": "BaseModel"
+    },
+    "BaseModel.e463a76d-0d56-43ef-8aa3-e354cdc7d979": {
+        "id": "e463a76d-0d56-43ef-8aa3-e354cdc7d979",
+        "created_at": "2023-09-16T17:30:41.014978",
+        "updated_at": "2023-09-16T17:30:41.014990",
+        "name": "My_First_Model",
+        "my_number": 89,
+        "__class__": "BaseModel"
     }
 }

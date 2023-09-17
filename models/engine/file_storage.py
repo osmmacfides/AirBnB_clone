@@ -58,6 +58,16 @@ class FileStorage:
             with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
+            keys_to_delete = []  # Create a list to store keys to delete
+
+            for key in FileStorage.__objects.keys():
+                if key not in data:
+                    keys_to_delete.append(key)
+
+            # Delete keys that are not present in the new data
+            for key in keys_to_delete:
+                del FileStorage.__objects[key]
+
             for key, value in data.items():
                 class_name = value['__class__']
                 obj = eval(class_name)(**value)
