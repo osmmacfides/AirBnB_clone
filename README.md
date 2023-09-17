@@ -14,6 +14,15 @@ This abstraction will also allow you to change the type of storage easily withou
 
 The console will be a tool to validate this storage engine
 
+# `Commands:`
+* create - create an object
+* show - show an object (based on id)
+* destroy - destroy an object
+* all - show all objects, of one type or all types
+* update - Updates an instance based on the class name and id
+* quit/EOF - quit the console
+* help - see descriptions of commands
+
 # `Supported classes:`
 * BaseModel
 * User
