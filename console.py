@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
         class_name = args[0]
 
         if args and class_name not in ["BaseModel", "User", "State", "City",
-                              "Place", "Review", "Amenity"]:
+                                       "Place", "Review", "Amenity"]:
             print("** class doesn't exist **")
             return
 
@@ -158,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-	instance = storage.get(class_name, instance_id)
+        instance = storage.get(class_name, instance_id)
         if not instance:
             print("** no instance found **")
             return
@@ -169,17 +169,20 @@ class HBNBCommand(cmd.Cmd):
 
         attribute_name = args[2]
 
-        if attribute_name == "id" or attribute_name == "created_at" or attribute_name == "updated_at":
+        if (attribute_name == "id" or
+           attribute_name == "created_at" or
+           attribute_name == "updated_at"):
             print("** cannot update id, created_at, or updated_at **")
             return
 
-	if len(args) < 5:
+        if len(args) < 5:
             print("** value missing **")
             return
 
         attribute_value = args[3]
 
-        # Check if the attribute value is enclosed in double quotes and strip them if present
+        # Check if the attribute value is enclosed in
+        # double quotes and strip them if present
         if attribute_value.startswith('"') and attribute_value.endswith('"'):
             attribute_value = attribute_value[1:-1]
 
@@ -193,7 +196,7 @@ class HBNBCommand(cmd.Cmd):
             print("** invalid attribute value **")
             return
 
-	# Update the attribute
+        # Update the attribute
         setattr(instance, attribute_name, casted_value)
         storage.save()
 
