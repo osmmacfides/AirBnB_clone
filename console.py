@@ -183,7 +183,8 @@ class HBNBCommand(cmd.Cmd):
 
         instance_id = args[1]
 
-        if class_name in storage.all():
+        instance = class_name + "." + instance_id
+        if instance in storage.all():
             instances = storage.all()[class_name]
             if instance_id in instances:
                 instance = instances[instance_id]
