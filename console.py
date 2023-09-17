@@ -58,13 +58,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        try:
-            new_instance = eval(class_name)()
-            new_instance.save()
-            print(new_instance.id)
-
-        except NameError:
-            print("** class doesn't exist **")
+        new_instance = eval(class_name)()
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, line):
         """
@@ -88,18 +84,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-        # Load the data from the JSON file
-        try:
-            with open("file.json", "r") as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            data = {}
-
-        # Construct the key to search for
-        key = "{}.{}".format(class_name, instance_id)
-        # Check if the key exists in the data
-        if key in data:
-            print(data[key])
+        instance = storage.get(class_name, instance_id)
+        if instance:
+            print(instance)
         else:
             print("** no instance found **")
 
@@ -125,17 +112,12 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-        try:
-            # Attempt to retrieve the instance based on
-            # class_name and instance_id
-            instance = storage.get(class_name, instance_id)
-            if instance:
-                storage.delete(instance)
-                storage.save()
-            else:
-                print("** no instance found **")
-        except Exception as e:
-            pass
+        instance = storage.get(class_name, instance_id)
+        if instance:
+            storage.delete(instance)
+            storage.save()
+        else:
+            print("** no instance found **")
 
     def do_all(self, line):
         """
@@ -143,19 +125,16 @@ class HBNBCommand(cmd.Cmd):
         instances based or not on the class name
         """
         args = line.split()
-        if not args:
-            print("** class name missing **")
-            return
 
         class_name = args[0]
 
-        if class_name not in ["BaseModel", "User", "State", "City",
+        if args and class_name not in ["BaseModel", "User", "State", "City",
                               "Place", "Review", "Amenity"]:
             print("** class doesn't exist **")
             return
 
-        instances = storage.all()
-        print([str(instance) for instance in instances])
+        instances = storage.all(args[0] if args else None)
+        print([str(instance) for instance in instances.values()])
 
     def do_update(self, line):
         """
@@ -179,50 +158,44 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-
-        if class_name in storage.all():
-            instances = storage.all()[class_name]
-            if instance_id in instances:
-                instance = instances[instance_id]
-
-                if len(args) < 4:
-                    print("** attribute name missing **")
-                    return
-
-                attribute_name = args[2]
-
-                if (attribute_name == "id" or
-                   attribute_name == "created_at" or
-                   attribute_name == "updated_at"):
-                    print("** cannot update id, created_at, or updated_at **")
-                    return
-
-                if len(args) < 5:
-                    print("** value missing **")
-                    return
-
-                attribute_value = args[3]
-                # The value doesn't need to be joined,
-                # as it's a single argument
-
-                # Get the current attribute type
-                attr_type = type(getattr(instance, attribute_name))
-
-                # Cast the attribute value to the attribute type
-                try:
-                    casted_value = attr_type(attribute_value)
-                except ValueError:
-                    print("** invalid attribute value **")
-                    return
-
-                # Update the attribute
-                setattr(instance, attribute_name, casted_value)
-
-                # Save the changes to the JSON file
-                storage.save()
-
-        else:
+	instance = storage.get(class_name, instance_id)
+        if not instance:
             print("** no instance found **")
+            return
+
+        if len(args) < 4:
+            print("** attribute name missing **")
+            return
+
+        attribute_name = args[2]
+
+        if attribute_name == "id" or attribute_name == "created_at" or attribute_name == "updated_at":
+            print("** cannot update id, created_at, or updated_at **")
+            return
+
+	if len(args) < 5:
+            print("** value missing **")
+            return
+
+        attribute_value = args[3]
+
+        # Check if the attribute value is enclosed in double quotes and strip them if present
+        if attribute_value.startswith('"') and attribute_value.endswith('"'):
+            attribute_value = attribute_value[1:-1]
+
+        # Get the current attribute type
+        attr_type = type(getattr(instance, attribute_name))
+
+        # Cast the attribute value to the attribute type
+        try:
+            casted_value = attr_type(attribute_value)
+        except ValueError:
+            print("** invalid attribute value **")
+            return
+
+	# Update the attribute
+        setattr(instance, attribute_name, casted_value)
+        storage.save()
 
 
 if __name__ == '__main__':
