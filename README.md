@@ -23,6 +23,21 @@ The console will be a tool to validate this storage engine
 * quit/EOF - quit the console
 * help - see descriptions of commands
 
+To start console type in shell
+
+    AirBnB_clone$ ./console.py
+    (hbnb) 
+
+## `Create`
+To create an object use format "create <ClassName>" ex:
+
+	(hbnb) create BaseModel
+
+## `Show`
+To show an instance based on the class name and id. Ex: 
+
+	(hbnb) show BaseModel 1234-1234-1234.
+
 # `Supported classes:`
 * BaseModel
 * User
