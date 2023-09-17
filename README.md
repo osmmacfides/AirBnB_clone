@@ -14,4 +14,41 @@ This abstraction will also allow you to change the type of storage easily withou
 
 The console will be a tool to validate this storage engine
 
+# `Commands:`
+* create - create an object
+* show - show an object (based on id)
+* destroy - destroy an object
+* all - show all objects, of one type or all types
+* update - Updates an instance based on the class name and id
+* quit/EOF - quit the console
+* help - see descriptions of commands
+
+To start console type in shell
+
+    AirBnB_clone$ ./console.py
+    (hbnb) 
+
+## `Create`
+To create an object use format "create <ClassName>" ex:
+
+	(hbnb) create BaseModel
+
+## `Show`
+To show an instance based on the class name and id. Ex: 
+
+	(hbnb) show BaseModel 1234-1234-1234.
+
+# `Supported classes:`
+* BaseModel
+* User
+* State
+* City
+* Amenity
+* Place
+* Review
+
+# `Authors`
+
+**Okonkwo Chiamaka** **[Email](okonkwosmmac@gmail.com@)**
+
 
