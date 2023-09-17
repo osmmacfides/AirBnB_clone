@@ -25,7 +25,7 @@ class FileStorage:
         This method returns the dictionary
         __object
         """
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """
@@ -33,7 +33,7 @@ class FileStorage:
         with key <obj class name>.id
         """
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.__objects[key] = obj
 
     def save(self):
         """
