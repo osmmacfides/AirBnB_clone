@@ -143,16 +143,14 @@ class HBNBCommand(cmd.Cmd):
         instances based or not on the class name
         """
         args = line.split()
-        instances = []
         all_objects = storage.all()
+        class_name = args[0]
 
-        if len(args) > 0:
-            class_name = args[0]
-            if class_name not in self.__classes:
-                print("** class doesn't exist **")
-                return
+        if len(args) > 0 and class_name not in self.__classes:
+            print("** class doesn't exist **")
 
         else:
+            instances = []
             for obj in all_objects.values():
                 if len(args) > 0 and args[0] == obj.__class__.__name__:
                     instances.append(obj.__str__())

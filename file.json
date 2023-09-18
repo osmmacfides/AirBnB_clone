@@ -29,12 +29,5 @@
         "updated_at": "2023-09-17T14:39:42.307213",
         "first_name": "Betty",
         "__class__": "BaseModel"
-    },
-    "BaseModel.894f5cbb-1e0f-40cf-a794-5682e6a3cf92": {
-        "id": "894f5cbb-1e0f-40cf-a794-5682e6a3cf92",
-        "created_at": "2023-09-17T14:45:55.206639",
-        "updated_at": "2023-09-17T14:45:55.206663",
-        "first_name": "\"Ugo\"",
-        "__class__": "BaseModel"
     }
 }
