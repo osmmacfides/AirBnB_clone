@@ -95,18 +95,13 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-        # Load the data from the JSON file
-        try:
-            with open("file.json", "r") as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            data = {}
+        all_data = storage.all()
 
         # Construct the key to search for
         key = "{}.{}".format(class_name, instance_id)
         # Check if the key exists in the data
-        if key in data:
-            print(data[key])
+        if key in all_data.keys():
+            print(all_data[key])
         else:
             print("** no instance found **")
 
@@ -131,17 +126,16 @@ class HBNBCommand(cmd.Cmd):
             return
 
         instance_id = args[1]
-        try:
-            # Attempt to retrieve the instance based on
-            # class_name and instance_id
-            instance = storage.get(class_name, instance_id)
-            if instance:
-                storage.delete(instance)
-                storage.save()
-            else:
-                print("** no instance found **")
-        except Exception as e:
-            pass
+
+        key = "{}.{}".format(class_name, instance_id)
+        all_data = storage.all()
+
+        # get key and delete instance
+        if key not in all_data.keys():
+            print("** no instance found **")
+        else:
+            del all_data[key]
+            storage.save()
 
     def do_all(self, line):
         """
