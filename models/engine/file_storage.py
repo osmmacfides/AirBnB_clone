@@ -19,6 +19,9 @@ class FileStorage:
     """
     __file_path = "file.json"
     __objects = {}
+    class_dict = {"BaseModel": BaseModel, "User": User, "Place": Place,
+                  "Amenity": Amenity, "City": City, "Review": Review,
+                  "State": State}
 
     def all(self):
         """
@@ -32,8 +35,9 @@ class FileStorage:
         This method sets in __objects the obj
         with key <obj class name>.id
         """
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        if obj:
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            self.__objects[key] = obj
 
     def save(self):
         """
@@ -58,20 +62,9 @@ class FileStorage:
             with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
-            keys_to_delete = []  # Create a list to store keys to delete
-
-            for key in FileStorage.__objects.keys():
-                if key not in data:
-                    keys_to_delete.append(key)
-
-            # Delete keys that are not present in the new data
-            for key in keys_to_delete:
-                del FileStorage.__objects[key]
-
             for key, value in data.items():
-                class_name = value['__class__']
-                obj = eval(class_name)(**value)
-                FileStorage.__objects[key] = obj
+                obj = self.class_dict[value['__class__']](**value)
+                self.__objects[key] = obj
 
         except FileNotFoundError:
             pass
