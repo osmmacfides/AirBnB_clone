@@ -1,0 +1,166 @@
+.places {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: px;
+}
+.places h1 {
+  font-size: 30px;
+  margin: 0;
+  padding-top: 20px;
+}
+
+article {
+  width: 390px;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ff5af5;
+  position: relative;
+}
+
+article h2 {
+  font-size: 30px;
+  text-align: center;
+}
+
+.articles {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.price_by_night {
+  color: #ff5a5f;
+  border: 4px solid #ff5a5f;
+  width: 60px;
+  border-radius: 50%;
+  height: 60px;
+  font-size: 30px;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 35px;
+  right: 35px;
+  margin-bottom: 30px;
+}
+
+.information {
+  height: 80px;
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  place-items: center;
+  margin-top: 70px;
+}
+
+.max_guest {
+  width: 100px;
+  display: flex;
+  height: inherit;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.guesticon {
+  height: inherit;
+  width: inherit;
+  background: url("../images/icon_group.png");
+  background-repeat: no-repeat;
+  margin-left: 25px;
+}
+.guest_number h2 {
+  font-size: 14px;
+  color: #484848;
+  font-weight: normal;
+}
+
+.number_rooms {
+  width: 100px;
+  display: flex;
+  height: inherit;
+  flex-direction: column;
+  justify-content: center;
+}
+.rooms_icon {
+  height: inherit;
+  width: inherit;
+  background: url("../images/icon_bed.png");
+  background-repeat: no-repeat;
+  margin-left: 25px;
+}
+.rooms_number h2 {
+  font-size: 14px;
+  color: #484848;
+  font-weight: normal;
+}
+
+.number_bathrooms {
+  width: 100px;
+  display: flex;
+  height: inherit;
+  flex-direction: column;
+  justify-content: center;
+}
+.bathrooms_icon {
+  height: inherit;
+  width: inherit;
+  background: url("../images/icon_bath.png");
+  background-repeat: no-repeat;
+  margin-left: 25px;
+}
+.bathrooms_number h2 {
+  font-size: 14px;
+  color: #484848;
+  font-weight: normal;
+}
+.user {
+  font-size: 14px;
+  color: #484848;
+  text-align: left;
+  margin-top: 15px;
+}
+.description {
+  font-size: 14px;
+  text-align: left;
+  margin-top: 7px;
+  margin-bottom: 0px;
+}
+
+/* .number_rooms {
+} */
+
+/* Price by night:
+
+Information section:
+tag: div
+classname: information
+height: 80px
+border: top and bottom #DDDDDD 1px
+contains (align vertically):
+Number of guests:
+tag: div
+classname: max_guest
+width: 100px
+fake text
+icon
+Number of bedrooms:
+tag: div
+classname: number_rooms
+width: 100px
+fake text
+icon
+Number of bathrooms:
+tag: div
+classname: number_bathrooms
+width: 100px
+fake text
+icon
+User section:
+tag: div
+classname: user
+text Owner: <fake text>
+Owner text should be in bold
+Description section:
+tag: div
+classname: description */
